@@ -1,16 +1,17 @@
 import Link from "next/link";
 import RegisterForm from "../../components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
+import { getUserFromCookie } from "../../lib/getUser";
 
-export default function Page() {
+export default async function Page() {
+	const user = await getUserFromCookie();
 	return (
 		<>
 			<p className="text-center">
 				{" "}
-				Don&rsquo;t have an account ? <strong>Create one</strong>
+				<a href="./login">Already have an account?</a>
 			</p>
 			<RegisterForm />
-			<LoginForm />
 		</>
 	);
 }
