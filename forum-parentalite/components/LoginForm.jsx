@@ -19,6 +19,7 @@ export default function LoginForm() {
 
 	return (
 		<>
+		<div className="mt-7 flex justify-center items-center self-center">
 			<form action={formAction}>
 				<label htmlFor="username">Username : </label>
 				<input type="text" name="username" id="username" />
@@ -26,8 +27,9 @@ export default function LoginForm() {
 				<label htmlFor="password">Password : </label>
 				<input type="password" name="password" id="password" />
 				<br />
-				<input type="submit" name="login" value="Login" />
+				<input className="border-2" type="submit" name="login" value="Login" />
 			</form>
+		</div>	
 		</>
 	);
 }

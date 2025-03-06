@@ -29,7 +29,7 @@ export default function RegisterForm() {
       <form action={formAction}>
         <div>
           <input
-            name="username"
+            name="username"s
             autoComplete="off"
             type="text"
             placeholder="Username"
