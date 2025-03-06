@@ -1,15 +1,19 @@
-
+"use client";
+import { read } from "../../actions/postController";
 
 export default function Home() {
-    return (
-        <div>
+	async function fetch() {
+		const posts = await read();
+		console.log(posts);
+	}
 
-            <div className="flex justify-center items-center">
-            <h1 className="">Posts</h1>
-            </div>
-            
+    fetch();
 
-        </div>
-        
-    )
+	return (
+		<div>
+			<div className="flex justify-center items-center">
+				<h1 className="">Posts</h1>
+			</div>
+		</div>
+	);
 }
