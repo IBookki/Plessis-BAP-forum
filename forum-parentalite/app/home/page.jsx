@@ -1,12 +1,15 @@
 "use client";
 
 import { read } from "../../actions/postController";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+	const [posts, setPosts] = useState([]);
+
 	async function fetch() {
-		const posts = await read();
-		console.log(posts);
+		const data = await read();
+		console.log(data);
+		setPosts(data);
 	}
 
 	useEffect(() => {
@@ -15,8 +18,14 @@ export default function Home() {
 
 	return (
 		<div>
-			<div className="flex justify-center items-center">
+			<div className="flex flex-col justify-center items-center">
 				<h1 className="">Posts</h1>
+
+				<ul>
+					{posts.map((item, index) => (
+						<li key={index}>{item.title} {item.content}</li>
+					))}
+				</ul>
 			</div>
 		</div>
 	);
