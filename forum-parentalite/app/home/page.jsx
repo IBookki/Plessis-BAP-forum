@@ -1,5 +1,7 @@
 "use client";
+
 import { read } from "../../actions/postController";
+import { useEffect } from "react";
 
 export default function Home() {
 	async function fetch() {
@@ -7,7 +9,9 @@ export default function Home() {
 		console.log(posts);
 	}
 
-    fetch();
+	useEffect(() => {
+		fetch();
+	}, []);
 
 	return (
 		<div>

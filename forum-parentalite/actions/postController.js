@@ -11,7 +11,7 @@ export const create = async (prevState, formData) => {
 
 	// Valide les données de l'utilisateur
 	if (typeof post.title != "string") post.title = "";
-	if (typeof post.title != "string") post.title = "";
+	if (typeof post.content != "string") post.content = "";
 
 	// Supprime les espaces inutiles
 	post.title = post.title.trim();
@@ -44,23 +44,17 @@ export const read = async (prevState) => {
 	// Lecture de tous les post sauvegardés
 	try {
 		const postsCollection = await getCollection("posts");
-		const posts = await postsCollection.find();
-
-		let output = {};
+		const posts = await postsCollection.find().toArray();
 
 		for await (const doc of posts) {
-			// console.log(doc);
-
-			const copiedDoc = structuredClone(doc);
-			output[copiedDoc._id] = copiedDoc;
+			doc._id = doc._id.toString();
 		}
 
-		// console.log(posts);
-		return output;
+		return posts;
 	} catch (error) {
 		console.error("Database error:", error);
 		return {
-			errors: { general: "Failed to save post" },
+			errors: { general: "Failed to fetch posts" },
 			success: false,
 		};
 	}
