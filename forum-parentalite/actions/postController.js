@@ -59,3 +59,35 @@ export const read = async (prevState) => {
 		};
 	}
 };
+
+export const readOne = async (prevState, id) => {
+	// Lecture de un post sélectionné
+	try {
+		const options = {
+			projection: { _id: id },
+		};
+
+		const postsCollection = await getCollection("posts");
+		const posts = await postsCollection.findOne({}, options).toArray();
+
+		for await (const doc of posts) {
+			doc._id = doc._id.toString();
+		}
+
+		return posts;
+	} catch (error) {
+		console.error("Database error:", error);
+		return {
+			errors: { general: "Failed to fetch posts" },
+			success: false,
+		};
+	}
+};
+
+export const remove = async (prevState) => {};
+
+export const like = async (prevState) => {};
+
+export const upvote = async (prevState) => {};
+
+export const downvote = async (prevState) => {};
