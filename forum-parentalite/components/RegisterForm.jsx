@@ -23,13 +23,12 @@ export default function RegisterForm() {
     }
   }, [formState?.success, router]);
 
-
   return (
     <div className="flex justify-center items-center min-h-[50vh]">
       <form action={formAction}>
         <div>
           <input
-            name="username"s
+            name="username"
             autoComplete="off"
             type="text"
             placeholder="Username"

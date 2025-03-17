@@ -27,6 +27,13 @@ export const register = async (prevState, formData) => {
     errors.username = "Username cannot be more than 30 characters";
   if (ourUser.username == "") errors.username = "Username cannot be empty";
 
+const userCollection = await getCollection("users");
+const usernameInQuestion = await userCollection.findOne({ username: ourUser.username });
+
+if (usernameInQuestion) {
+  errors.username = "Username already exists";
+}
+
   // Exigences pour le mot de passe
   if (ourUser.password.length < 6)
     errors.password = "Password must be at least 6 characters";
@@ -84,21 +91,50 @@ export const login = async (prevState, formData) => {
 
   // Supprime les espaces inutiles
   ourUser.username = ourUser.username.trim();
-  ourUser.username = ourUser.username.trim();
 
   // Rechercher l'utilisateur dans la base de données
   try {
     const usersCollection = await getCollection("users");
-    const dbUser = await usersCollection.find({ username: ourUser.username });
+    const dbUser = await usersCollection.findOne({ username: ourUser.username });
 
-    console.log(dbUser);
+    if (!dbUser) {
+      return {
+        errors: { general: "Invalid username or password" },
+        success: false,
+      };
+    }
+
+    // Verifie le mdp
+    const passwordMatch = await bcrypt.compare(ourUser.password, dbUser.password);
+    
+    if (!passwordMatch) {
+      return {
+        errors: { general: "Invalid username or password" },
+        success: false,
+      };
+    }
+
+    // Crée le JWT token
+    const userId = dbUser._id.toString();
+    const ourTokenValue = jwt.sign(
+      { userId: userId },
+      process.env.JWTSECRET,
+      { expiresIn: "30d" }
+    );
+
+    // Donne le cookie
+    cookies().set("Forum-parentalite", ourTokenValue, {
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24,
+      secure: true,
+    });
 
     return { success: true };
   } catch (error) {
     console.error("Database error:", error);
-
     return {
-      errors: { general: "Could not find user" },
+      errors: { general: "Login failed" },
       success: false,
     };
   }
