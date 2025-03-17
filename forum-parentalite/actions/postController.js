@@ -1,4 +1,5 @@
 "use server";
+import { ObjectId } from "mongodb";
 import { getCollection } from "../lib/db";
 
 export const create = async (prevState, formData) => {
@@ -60,21 +61,17 @@ export const read = async (prevState) => {
 	}
 };
 
-export const readOne = async (prevState, id) => {
+export const readOne = async (id) => {
 	// Lecture de un post sélectionné
 	try {
-		const options = {
-			projection: { _id: id },
-		};
+		const query = { _id: new ObjectId(`${id}`) };
 
 		const postsCollection = await getCollection("posts");
-		const posts = await postsCollection.findOne({}, options).toArray();
+		const post = await postsCollection.findOne(query);
 
-		for await (const doc of posts) {
-			doc._id = doc._id.toString();
-		}
+		post._id = post._id.toString();
 
-		return posts;
+		return post;
 	} catch (error) {
 		console.error("Database error:", error);
 		return {
@@ -84,10 +81,10 @@ export const readOne = async (prevState, id) => {
 	}
 };
 
-export const remove = async (prevState) => {};
+export const remove = async () => {};
 
-export const like = async (prevState) => {};
+export const like = async () => {};
 
-export const upvote = async (prevState) => {};
+export const upvote = async () => {};
 
-export const downvote = async (prevState) => {};
+export const downvote = async () => {};

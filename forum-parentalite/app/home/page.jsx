@@ -21,11 +21,16 @@ export default function Home() {
 			<div className="flex flex-col justify-center items-center">
 				<h1 className="">Posts</h1>
 
-				<ul>
+				<main>
 					{posts.map((item, index) => (
-						<li key={index}>{item.title} {item.content}</li>
+						<a href={`post/${item._id}`} key={index}>
+							<article>
+								<h3 className="font-semibold">{item.title}</h3>
+								<p>{item.content}</p>
+							</article>
+						</a>
 					))}
-				</ul>
+				</main>
 			</div>
 		</div>
 	);

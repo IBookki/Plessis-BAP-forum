@@ -2,6 +2,7 @@
 "use server";
 
 import { readOne } from "@/actions/postController";
+import { log } from "console";
 import { useEffect } from "react";
 
 export default async function findOneUser({
@@ -13,19 +14,12 @@ export default async function findOneUser({
 }) {
     // Récupération de l'id parmi les paramètres d'URL
     const id = (await params).id;
-
-    useEffect(() => {
-        async function fetch(id: string) {
-            const data = await readOne(id);
-            console.log(data);
-        }
-
-        fetch(id);
-    }, []);
+    const data = await readOne(id);
+    console.log(data);
 
     return (
         <>
-            {id}
+
         </>
     );
 }
