@@ -8,6 +8,7 @@ export const create = async (prevState, formData) => {
 	const post = {
 		title: formData.get("title"),
 		content: formData.get("content"),
+		likes: 0,
 	};
 
 	// Valide les données de l'utilisateur
@@ -75,16 +76,47 @@ export const readOne = async (id) => {
 	} catch (error) {
 		console.error("Database error:", error);
 		return {
-			errors: { general: "Failed to fetch posts" },
+			errors: { general: "Failed to fetch post" },
 			success: false,
 		};
 	}
 };
 
-export const remove = async () => {};
+export const remove = async (id) => {
+	// Suppression de un post sélectionné
+	try {
+		const query = { _id: new ObjectId(`${id}`) };
 
-export const like = async () => {};
+		const postsCollection = await getCollection("posts");
+		const post = await postsCollection.findOneAndDelete(query);
 
-export const upvote = async () => {};
+		post._id = post._id.toString();
 
-export const downvote = async () => {};
+		return post;
+	} catch (error) {
+		console.error("Database error:", error);
+		return {
+			errors: { general: "Failed to remove post" },
+			success: false,
+		};
+	}
+};
+
+export const like = async (id) => {
+	// Ajoute un like à un post
+
+	const filter = { _id: new ObjectId(`${id}`) };
+	const update = { $inc: { likes: 1 } };
+
+	try {
+		const postsCollection = await getCollection("posts");
+		await postsCollection.updateOne(filter, update);
+		return { success: true };
+	} catch (error) {
+		console.error("Database error:", error);
+		return {
+			errors: { general: "Failed to save like" },
+			success: false,
+		};
+	}
+};
