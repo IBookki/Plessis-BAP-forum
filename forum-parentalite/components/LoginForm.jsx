@@ -17,17 +17,48 @@ export default function LoginForm() {
 	const [formState, formAction] = useActionState(login, initialState);
 	const { pending } = useFormStatus();
 
+	// Redirige vers la home page si le login est réussi
+	useEffect(() => {
+		if (formState?.success) {
+			router.push("../home");
+		}
+	}, [formState?.success, router]);
+
 	return (
 		<>
-		<div className="mt-7 flex justify-center items-center self-center">
-			<form action={formAction}>
-				<label htmlFor="username">Username : </label>
-				<input type="text" name="username" id="username" />
-				<br />
-				<label htmlFor="password">Password : </label>
-				<input type="password" name="password" id="password" />
-				<br />
-				<input className="border-2" type="submit" name="login" value="Login" />
+		<div className="mt-7 flex flex-col justify-center items-center self-center">
+			<form action={formAction} className="flex flex-col gap-4 w-full max-w-xs">
+				<div>
+					<label htmlFor="username" className="block mb-1">Username : </label>
+					<input 
+						type="text" 
+						name="username" 
+						id="username"
+						className="w-full p-2 border rounded" 
+					/>
+				</div>
+				
+				<div>
+					<label htmlFor="password" className="block mb-1">Password : </label>
+					<input 
+						type="password" 
+						name="password" 
+						id="password" 
+						className="w-full p-2 border rounded"
+					/>
+				</div>
+				
+				{formState?.errors?.general && (
+					<p className="text-red-500 text-sm">
+						{formState.errors.general}
+					</p>
+				)}
+				
+				<button 
+					type="submit" 
+					disabled={pending}>
+					{pending ? "Logging in..." : "Login"}
+				</button>
 			</form>
 		</div>	
 		</>
