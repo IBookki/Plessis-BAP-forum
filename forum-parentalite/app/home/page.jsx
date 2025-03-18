@@ -36,14 +36,14 @@ export default function Home() {
 
 				<main className="flex flex-col gap-4">
 					{posts.map((item, index) => (
-						<a href={"#"} key={index}>
+						<a href={`post/${item._id}`} key={index}>
 							<article>
 								<h3 className="font-semibold">{item.title}</h3>
 								<p>{item.content}</p>
 
 								<ul className="flex flex-row gap-2">
 									<li>
-										<button className="p-2 bg-slate-400" onClick={() => sendLike(`${item._id}`)}>
+										<button className="p-2 bg-slate-400 z-10" onClick={() => sendLike(`${item._id}`)}>
 											Like ({item.likes || 0})
 										</button>
 									</li>
