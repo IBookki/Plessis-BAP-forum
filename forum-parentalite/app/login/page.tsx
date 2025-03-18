@@ -7,11 +7,7 @@ export default async function Page() {
     const user = await getUserFromCookie();
     return (
         <>
-        {user && (<p>Welcome</p>)}
-        <p className="text-center">
-            {" "}
-            <a href="./register">Don&rsquo;t have an account ?</a>
-        </p>
+
         <LoginForm />
         </>
     );

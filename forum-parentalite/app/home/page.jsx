@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/Header";
 import { read, like } from "../../actions/postController";
 import { useEffect, useState } from "react";
 
@@ -31,6 +32,7 @@ export default function Home() {
 
 	return (
 		<div>
+      <Header />
 			<div className="flex flex-col justify-center items-center">
 				<h1 className="">Posts</h1>
 
