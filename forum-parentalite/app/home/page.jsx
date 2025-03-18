@@ -1,14 +1,14 @@
 "use client";
 
 import Header from "@/components/Header";
-import { read, like } from "../../actions/postController";
+import { read, like, readTrending } from "../../actions/postController";
 import { useEffect, useState } from "react";
 
 export default function Home() {
 	const [posts, setPosts] = useState([]);
 
 	async function fetch() {
-		const data = await read();
+		const data = await readTrending();
 		console.log(data);
 		setPosts(data);
 	}
@@ -28,6 +28,10 @@ export default function Home() {
 
 		updatedPost[index].likes = (updatedPost[index].likes || 0) + 1;
 		setPosts(updatedPost);
+	}
+
+	async function sendComment(postId, comment) {
+		
 	}
 
 	return (
