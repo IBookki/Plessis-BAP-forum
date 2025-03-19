@@ -3,16 +3,49 @@ import Link from "next/link";
 
 export const Side: React.FC = () => {
   return (
-    <div className="h-screen w-[15%] bg-red overflow-y-auto shadow-md text-left border-l-2 border-pink-800 ml-auto">
-      <div className="text-lime-400 font-inter h-[10vh] pl-4 flex items-center font-bold">
-        Profil
+    <div className="h-screen w-[20%] bg-red overflow-y-auto shadow-md text-left border-l-2 border-pink-800 ml-auto bg-white">
+      <div className="flex pl-4">
+        <Image
+          alt=""
+          width={30}
+          height={30}
+          src="/icons/profil-icons.png"
+          className="object-contain"
+        />
+        <div className="text-lime-600 font-inter h-[10vh] pl-4 flex items-center font-bold">
+          Profil
+        </div>
       </div>
-      <div className="text-orange-400 font-inter border-t-2 h-[10vh] pl-4 border-pink-800 flex items-center font-bold">
-        Messages
+        <hr className="border-t-2 border-red-800 w-full mx-auto" />
+      <div className="flex pl-4">
+        <Image
+            alt=""
+            width={30}
+            height={30}
+            src="/icons/messages-icons.png"
+            className="object-contain"
+        />
+        <div className="text-orange-400 font-inter h-[10vh] pl-4  flex items-center font-bold">
+          Messages
+        </div>
       </div>
-      <div className="text-purple-500 font-inter border-t-2 h-[10vh] pl-4 border-pink-800 flex items-center font-bold">
-        Notifications
+
+        <hr className="border-t-2 border-red-800 w-full mx-auto" />
+
+      <div className="flex pl-4">
+        <Image
+            alt=""
+            width={30}
+            height={30}
+            src="/icons/notifications-icons.png"
+            className="object-contain"
+        />
+        <div className="text-purple-500 font-inter h-[10vh] pl-4 flex items-center font-bold">
+          Notifications
+        </div>
       </div>
+        <hr className="border-t-2 border-red-800 w-full mx-auto" />
+
     </div>
   );
 };

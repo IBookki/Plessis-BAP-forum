@@ -4,7 +4,8 @@ import Header from "@/components/Header";
 import { read, like, create } from "../../actions/postController";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Rightbar from "@/components/Rightbar"; // Add missing import
+import Rightbar from "@/components/Rightbar";
+import Leftbar from "@/components/Leftbar";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -58,6 +59,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <div className="flex">
+        <Leftbar />
         <div className="flex-grow">
           <div className="flex flex-col justify-center items-center pt-7">
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-2xl border border-red-800">

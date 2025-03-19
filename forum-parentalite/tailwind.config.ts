@@ -10,6 +10,7 @@ export default {
     extend: {
       fontFamily: {
         'inter': ['Inter', 'sans-serif'],
+        'olivier': ['Olivier', 'sans-serif']
       },
       colors: {
         background: "var(--background)",
