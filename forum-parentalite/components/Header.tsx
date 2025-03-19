@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -17,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
     <header className="h-auto w-full p-4 flex justify-between items-center bg-white z-20 relative border-b-2 border-red-800">
       <div className="pt-5 pb-5 hidden sm:block">
-        <Image
+        <Link href={" /home"}><Image
           src="/logo.png"
           width={0}
           height={0}
@@ -25,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           style={{ width: "100%", height: "auto" }}
           priority
           alt="Logo"
-        />
+        /></Link>
       </div>
 
       {/* Formulaire de recherche pour desktop */}

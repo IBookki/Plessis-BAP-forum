@@ -26,7 +26,6 @@ export default function LoginForm() {
 
 	return (
 		<div className="flex flex-col md:flex-row min-h-screen">
-			{/* Left column with centered banner image */}
 			<div className="w-full md:w-1/2 flex items-center justify-center p-4 bg-gray-50">
 				<div className="relative w-full max-w-lg aspect-auto">
 					<Image
@@ -40,7 +39,6 @@ export default function LoginForm() {
 				</div>
 			</div>
 
-			{/* Right column with the login form */}
 			<div className="w-full md:w-1/2 flex flex-col justify-center items-center p-4">
 				<div className="w-full max-w-md">
 					<h1 className="text-xl text-center text-pink-800">Se connecter</h1>
