@@ -42,11 +42,35 @@ export const create = async (prevState, formData) => {
 	}
 };
 
-export const read = async (prevState) => {
+export const read = async () => {
 	// Lecture de tous les post sauvegardés
 	try {
 		const postsCollection = await getCollection("posts");
 		const posts = await postsCollection.find().toArray();
+
+		for await (const doc of posts) {
+			doc._id = doc._id.toString();
+		}
+
+		return posts;
+	} catch (error) {
+		console.error("Database error:", error);
+		return {
+			errors: { general: "Failed to fetch posts" },
+			success: false,
+		};
+	}
+};
+
+export const readTrending = async () => {
+	// Lecture de tous les post par ordre décroissant de likes
+
+	const query = {};
+	const sort = { likes: -1 };
+
+	try {
+		const postsCollection = await getCollection("posts");
+		const posts = await postsCollection.find(query).sort(sort).toArray();
 
 		for await (const doc of posts) {
 			doc._id = doc._id.toString();
@@ -116,6 +140,43 @@ export const like = async (id) => {
 		console.error("Database error:", error);
 		return {
 			errors: { general: "Failed to save like" },
+			success: false,
+		};
+	}
+};
+
+export const comment = async (postId, comment) => {
+	// Ajoute un commentaire à un post
+
+	const errors = {};
+
+	const commentContent = {
+		comment: formData.get("comment"),
+	};
+
+	// Valide les données de l'utilisateur
+	if (typeof post.comment != "string") post.comment = "";
+
+	// Supprime les espaces inutiles
+	post.comment = post.comment.trim();
+
+	// Vérifie le contenu
+	if (post.content == "") errors.content = "Content cannot be empty";
+
+	// Si des erreurs sont trouvées, retourne les erreurs
+	if (errors.content) {
+		return { errors: errors, success: false };
+	}
+
+	// Sauvegarde le post dans la base de données
+	try {
+		const postsCollection = await getCollection("posts");
+		await postsCollection.insertOne(commentContent);
+		return { success: true };
+	} catch (error) {
+		console.error("Database error:", error);
+		return {
+			errors: { general: "Failed to save post" },
 			success: false,
 		};
 	}
