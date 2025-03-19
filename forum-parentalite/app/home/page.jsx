@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import { read, like, create } from "../../actions/postController";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Rightbar from "@/components/Rightbar"; // Add missing import
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -11,11 +12,11 @@ export default function Home() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
-	async function fetch() {
-		const data = await read();
-		console.log(data);
-		setPosts(data);
-	}
+  async function fetch() {
+    const data = await read();
+    console.log(data);
+    setPosts(data);
+  }
 
   useEffect(() => {
     fetch();
@@ -41,7 +42,6 @@ export default function Home() {
   }
 
   async function sendLike(postId) {
-  async function sendLike(postId) {
     console.log("like");
     await like(postId);
 
@@ -53,6 +53,7 @@ export default function Home() {
     updatedPost[index].likes = (updatedPost[index].likes || 0) + 1;
     setPosts(updatedPost);
   }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -115,7 +116,7 @@ export default function Home() {
                       className="w-6 h-6 text-green-500"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox="0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
@@ -132,29 +133,34 @@ export default function Home() {
             </div>
             <h1 className="">Posts</h1>
 
-				<main className="flex flex-col gap-4">
-					{posts.map((item, index) => (
-						<a href={"#"} key={index}>
-							<article>
-								<h3 className="font-semibold">{item.title}</h3>
-								<p>{item.content}</p>
+            <main className="flex flex-col gap-4">
+              {posts.map((item, index) => (
+                <a href={"#"} key={index}>
+                  <article>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p>{item.content}</p>
 
-								<ul className="flex flex-row gap-2">
-									<li>
-										<button className="p-2 bg-slate-400" onClick={() => sendLike(`${item._id}`)}>
-											Like ({item.likes || 0})
-										</button>
-									</li>
-									<li>
-										<button>Comment</button>
-									</li>
-								</ul>
-							</article>
-						</a>
-					))}
-				</main>
-			</div>
-		</div>
-    </div>
+                    <ul className="flex flex-row gap-2">
+                      <li>
+                        <button
+                          className="p-2 bg-slate-400"
+                          onClick={() => sendLike(`${item._id}`)}
+                        >
+                          Like ({item.likes || 0})
+                        </button>
+                      </li>
+                      <li>
+                        <button>Comment</button>
+                      </li>
+                    </ul>
+                  </article>
+                </a>
+              ))}
+            </main>
+          </div>
+        </div>
+        <Rightbar />
       </div>
-      )}};
+    </div>
+  );
+}
