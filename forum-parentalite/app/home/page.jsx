@@ -1,9 +1,8 @@
 "use client";
 
 import Header from "@/components/Header";
-import { read, like } from "../../actions/postController";
+import { read, like, create } from "../../actions/postController";
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/Rightbar";
 import Image from "next/image";
 
 export default function Home() {
@@ -42,22 +41,22 @@ export default function Home() {
   }
 
   async function sendLike(postId) {
+  async function sendLike(postId) {
     console.log("like");
-    const response = await like(postId);
+    await like(postId);
 
     const index = posts.findIndex((p) => p._id == postId);
     console.log(index);
 
     const updatedPost = [...posts];
 
-		updatedPost[index].likes = (updatedPost[index].likes || 0) + 1;
-		setPosts(updatedPost);
-	}
-
+    updatedPost[index].likes = (updatedPost[index].likes || 0) + 1;
+    setPosts(updatedPost);
+  }
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="flex flex-grow">
+      <div className="flex">
         <div className="flex-grow">
           <div className="flex flex-col justify-center items-center pt-7">
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-2xl border border-red-800">
@@ -156,5 +155,6 @@ export default function Home() {
 				</main>
 			</div>
 		</div>
-	);
-}
+    </div>
+      </div>
+      )}};
