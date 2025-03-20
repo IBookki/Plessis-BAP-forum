@@ -135,28 +135,48 @@ export default function Home() {
             </div>
             <h1 className="">Posts</h1>
 
-            <main className="flex flex-col gap-4">
+            <main className="flex flex-col gap-4 w-full max-w-2xl">
               {posts.map((item, index) => (
-                <a href={"#"} key={index}>
+                <div
+                  key={index}
+                  className="bg-white p-4 rounded-lg shadow-md w-full border border-red-800"
+                >
                   <article>
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p>{item.content}</p>
+                    <h3 className="pl-6 pt-2 font-semibold">{item.title}</h3>
+                    <p className="p-6 text-left">{item.content}</p>
+                    <hr className="border-t-2 border-red-800 w-4/5 mx-auto" />
 
-                    <ul className="flex flex-row gap-2">
+                    <ul className="pt-5 flex flex-row gap-6 justify-around items-center w-full">
                       <li>
                         <button
-                          className="p-2 bg-slate-400"
+                          className="gap-2 flex items-center text-slate-600"
                           onClick={() => sendLike(`${item._id}`)}
                         >
-                          Like ({item.likes || 0})
+                          <Image
+                            alt=""
+                            width={25}
+                            height={25}
+                            src="/icons/like-icons.png"
+                            className="object-contain"
+                          />
+                          {item.likes || 0}
                         </button>
                       </li>
                       <li>
-                        <button>Comment</button>
+                        <button className="gap-2 flex items-center text-slate-600">
+                          <Image
+                            alt=""
+                            width={25}
+                            height={25}
+                            src="/icons/comment-icons.png"
+                            className="object-contain"
+                          />
+                          Comment
+                        </button>
                       </li>
                     </ul>
                   </article>
-                </a>
+                </div>
               ))}
             </main>
           </div>
