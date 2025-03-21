@@ -106,10 +106,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="flex">
+      <div className="flex flex-grow min-h-[calc(100vh-64px)]">
         <Leftbar />
-        <div className="flex-grow">
-          <div className="flex flex-col justify-center items-center pt-7">
+        <div className="flex-grow overflow-y-auto">
+          <div className="flex flex-col justify-center items-center pt-7 pb-10">
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-2xl border border-red-800">
               <form onSubmit={handleSubmit}>
                 <div className="flex items-center mb-4">

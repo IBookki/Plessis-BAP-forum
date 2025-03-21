@@ -101,24 +101,19 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         )}
       </div>
 
-      {/* Compte utilisateur */}
-      <div className="flex items-center">
-        {/* Avatar rond pour mobile */}
-        <div className="sm:hidden w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+      <div className="flex items-center pr-4">
+        <Link href={"/account"} className="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
           <Image
-            src="/avatar-placeholder.png"
-            width={32}
-            height={32}
+            src="/vercel.svg"
+            width={80}
+            height={60}
             alt="Avatar utilisateur"
             className="w-full h-full object-cover"
-          />
-        </div>
+            />
+        </Link>
 
-        {/* Texte pour desktop */}
-        <span className="hidden sm:block">User Account</span>
       </div>
 
-      {/* Bouton menu mobile */}
       <button
         className="sm:hidden p-2 rounded-lg hover:bg-gray-100 ml-4"
         onClick={onMenuClick}
