@@ -29,10 +29,20 @@ export default function Home() {
     setError("");
 
     try {
-      const response = await create({ content });
-      if (response) {
+      const formData = new FormData();
+      formData.append("content", content);
+
+      const response = await create(null, formData); // Passing with correct signature
+
+      if (response && response.success) {
         setContent("");
         fetch();
+      } else if (response && response.errors) {
+        setError(
+          response.errors.content ||
+            response.errors.general ||
+            "Failed to create post"
+        );
       }
     } catch (err) {
       console.error("Error creating post:", err);
@@ -78,7 +88,7 @@ export default function Home() {
                     name="content"
                     autoComplete="off"
                     type="text"
-                    placeholder="À quoi penses-tu, Jean ?"
+                    placeholder="À quoi penses-tu ?"
                     className="ml-4 flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
@@ -142,8 +152,28 @@ export default function Home() {
                   className="bg-white p-4 rounded-lg shadow-md w-full border border-red-800"
                 >
                   <article>
-                    <h3 className="pl-6 pt-2 font-semibold">{item.title}</h3>
-                    <p className="p-6 text-left">{item.content}</p>
+                    <div className="flex items-center mb-4 pl-2">
+                      <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 mr-3">
+                        <Image
+                          src="/vercel.svg"
+                          width={48}
+                          height={48}
+                          alt="Avatar utilisateur"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">
+                          {item.username || "Anonymous"}
+                        </h3>
+                        {item.createdAt && (
+                          <p className="text-xs text-gray-500">
+                            {new Date(item.createdAt).toLocaleString()}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <p className="p-6 pl-11 text-left">{item.content}</p>
                     <hr className="border-t-2 border-red-800 w-4/5 mx-auto" />
 
                     <ul className="pt-5 flex flex-row gap-6 justify-around items-center w-full">

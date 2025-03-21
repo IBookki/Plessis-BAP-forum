@@ -1,30 +1,55 @@
 "use server";
 import { ObjectId } from "mongodb";
 import { getCollection } from "../lib/db";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+
+// Helper function to get the current user from JWT
+async function getCurrentUser() {
+  try {
+    const cookieStore = cookies();
+    const token = cookieStore.get("Forum-parentalite")?.value;
+    
+    if (!token) return null;
+    
+    const decoded = jwt.verify(token, process.env.JWTSECRET);
+    const userId = decoded.userId;
+    
+    const usersCollection = await getCollection("users");
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    
+    return user;
+  } catch (error) {
+    console.error("Error getting current user:", error);
+    return null;
+  }
+}
 
 export const create = async (prevState, formData) => {
 	const errors = {};
+  
+  // Get current user
+  const currentUser = await getCurrentUser();
+  const username = currentUser ? currentUser.username : "Anonymous";
 
 	const post = {
-		title: formData.get("title"),
 		content: formData.get("content"),
 		likes: 0,
+    username: username,  // Add username to post
+    createdAt: new Date()
 	};
 
 	// Valide les données de l'utilisateur
-	if (typeof post.title != "string") post.title = "";
 	if (typeof post.content != "string") post.content = "";
 
 	// Supprime les espaces inutiles
-	post.title = post.title.trim();
 	post.content = post.content.trim();
 
 	// Vérifie le contenu
-	if (post.title == "") errors.title = "Title cannot be empty";
 	if (post.content == "") errors.content = "Content cannot be empty";
 
 	// Si des erreurs sont trouvées, retourne les erreurs
-	if (errors.title || errors.content) {
+	if (errors.content) {
 		return { errors: errors, success: false };
 	}
 
