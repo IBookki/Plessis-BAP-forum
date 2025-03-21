@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
-import { read, like, create } from "../../actions/postController";
+import { read, like, create, comment } from "../../actions/postController";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Rightbar from "@/components/Rightbar";
@@ -12,6 +12,8 @@ export default function Home() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [commentContents, setCommentContents] = useState({});
+  const [showComments, setShowComments] = useState({});
 
   async function fetch() {
     const data = await read();
@@ -32,7 +34,7 @@ export default function Home() {
       const formData = new FormData();
       formData.append("content", content);
 
-      const response = await create(null, formData); // Passing with correct signature
+      const response = await create(null, formData);
 
       if (response && response.success) {
         setContent("");
@@ -51,6 +53,42 @@ export default function Home() {
       setPending(false);
     }
   }
+
+  async function handleCommentSubmit(e, postId) {
+    e.preventDefault();
+    setPending(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("postId", postId);
+      formData.append("content", commentContents[postId] || "");
+
+      const response = await comment(null, formData);
+
+      if (response && response.success) {
+        setCommentContents((prev) => ({ ...prev, [postId]: "" }));
+        fetch();
+      } else if (response && response.errors) {
+        setError(
+          response.errors.content ||
+            response.errors.general ||
+            "Failed to add comment"
+        );
+      }
+    } catch (err) {
+      console.error("Error adding comment:", err);
+      setError("Failed to add comment. Please try again.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  const toggleComments = (postId) => {
+    setShowComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
 
   async function sendLike(postId) {
     console.log("like");
@@ -143,9 +181,8 @@ export default function Home() {
                 </div>
               </form>
             </div>
-            <h1 className="">Posts</h1>
 
-            <main className="flex flex-col gap-4 w-full max-w-2xl">
+            <main className="flex flex-col gap-4 w-full max-w-2xl pt-9">
               {posts.map((item, index) => (
                 <div
                   key={index}
@@ -193,7 +230,10 @@ export default function Home() {
                         </button>
                       </li>
                       <li>
-                        <button className="gap-2 flex items-center text-slate-600">
+                        <button
+                          className="gap-2 flex items-center text-slate-600"
+                          onClick={() => toggleComments(item._id)}
+                        >
                           <Image
                             alt=""
                             width={25}
@@ -201,10 +241,97 @@ export default function Home() {
                             src="/icons/comment-icons.png"
                             className="object-contain"
                           />
-                          Comment
+                          Comment{" "}
+                          {item.comments?.length > 0 &&
+                            `(${item.comments.length})`}
                         </button>
                       </li>
                     </ul>
+
+                    {/* Comments section */}
+                    {showComments[item._id] && (
+                      <div className="mt-4 border-t border-gray-200 pt-3">
+                        <h4 className="text-sm font-semibold mb-2">Commentaires</h4>
+
+                        {/* Display existing comments */}
+                        {item.comments && item.comments.length > 0 ? (
+                          <div className="space-y-3 mb-4">
+                            {item.comments.map((comment, commentIndex) => (
+                              <div
+                                key={commentIndex}
+                                className="flex items-start ml-6"
+                              >
+                                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 mr-2">
+                                  <Image
+                                    src="/vercel.svg"
+                                    width={32}
+                                    height={32}
+                                    alt="Comment avatar"
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="bg-gray-100 rounded-lg p-2 flex-grow">
+                                  <div className="flex justify-between items-center">
+                                    <p className="text-xs font-semibold">
+                                      {comment.username || "Anonymous"}
+                                    </p>
+                                    {comment.createdAt && (
+                                      <p className="text-xs text-gray-500">
+                                        {new Date(
+                                          comment.createdAt
+                                        ).toLocaleString()}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <p className="text-sm mt-1">
+                                    {comment.content}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-gray-500 ml-6 mb-3">
+                            Pas encore de commentaires
+                          </p>
+                        )}
+
+                        <form
+                          onSubmit={(e) => handleCommentSubmit(e, item._id)}
+                          className="flex items-center"
+                        >
+                          <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 mr-2">
+                            <Image
+                              src="/vercel.svg"
+                              width={32}
+                              height={32}
+                              alt="Your avatar"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Write a comment..."
+                            className="flex-grow px-3 py-1 rounded-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-300 text-sm"
+                            value={commentContents[item._id] || ""}
+                            onChange={(e) =>
+                              setCommentContents((prev) => ({
+                                ...prev,
+                                [item._id]: e.target.value,
+                              }))
+                            }
+                            required
+                          />
+                          <button
+                            type="submit"
+                            className="ml-2 px-3 py-1 bg-red-800 text-white rounded-full text-sm"
+                            disabled={pending}
+                          >
+                            {pending ? "..." : "Post"}
+                          </button>
+                        </form>
+                      </div>
+                    )}
                   </article>
                 </div>
               ))}

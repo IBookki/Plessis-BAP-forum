@@ -170,39 +170,46 @@ export const like = async (id) => {
 	}
 };
 
-export const comment = async (postId, comment) => {
-	// Ajoute un commentaire à un post
+export const comment = async (prevState, formData) => {
+  const errors = {};
+  
+  // Get the post ID and comment content from form data
+  const postId = formData.get("postId");
+  const content = formData.get("content");
 
-	const errors = {};
+  // Get current user
+  const currentUser = await getCurrentUser();
+  const username = currentUser ? currentUser.username : "Anonymous";
 
-	const commentContent = {
-		comment: formData.get("comment"),
-	};
+  // Validate the content
+  if (typeof content !== "string" || content.trim() === "") {
+    return { 
+      errors: { content: "Comment cannot be empty" }, 
+      success: false 
+    };
+  }
 
-	// Valide les données de l'utilisateur
-	if (typeof post.comment != "string") post.comment = "";
+  const newComment = {
+    content: content.trim(),
+    username: username,
+    createdAt: new Date()
+  };
 
-	// Supprime les espaces inutiles
-	post.comment = post.comment.trim();
-
-	// Vérifie le contenu
-	if (post.content == "") errors.content = "Content cannot be empty";
-
-	// Si des erreurs sont trouvées, retourne les erreurs
-	if (errors.content) {
-		return { errors: errors, success: false };
-	}
-
-	// Sauvegarde le post dans la base de données
-	try {
-		const postsCollection = await getCollection("posts");
-		await postsCollection.insertOne(commentContent);
-		return { success: true };
-	} catch (error) {
-		console.error("Database error:", error);
-		return {
-			errors: { general: "Failed to save post" },
-			success: false,
-		};
-	}
+  try {
+    const postsCollection = await getCollection("posts");
+    
+    // Update the post with the new comment
+    await postsCollection.updateOne(
+      { _id: new ObjectId(postId) },
+      { $push: { comments: newComment } }
+    );
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Database error:", error);
+    return {
+      errors: { general: "Failed to save comment" },
+      success: false,
+    };
+  }
 };
