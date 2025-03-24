@@ -18,7 +18,7 @@ export const Side: React.FC = () => {
     <>
       <button
         onClick={toggleMobileSidebar}
-        className="md:hidden fixed z-50 top-20 left-2 bg-white rounded-full p-2 shadow-md border border-pink-800"
+        className="md:hidden fixed z-50 top-20 left-2 bg-white rounded-full p-2 shadow-md border border-pink-800 hover:bg-pink-50"
         aria-label="Toggle sidebar"
       >
         <Image
@@ -27,7 +27,6 @@ export const Side: React.FC = () => {
           height={20}
           src={mobileOpen ? "/icons/arrow-left.png" : "/icons/arrow-right.png"}
           className="object-contain"
-
         />
       </button>
 
@@ -40,7 +39,7 @@ export const Side: React.FC = () => {
         <div className="flex justify-end p-2">
           <button
             onClick={toggleSidebar}
-            className="rounded-full p-2 hidden md:block"
+            className="rounded-full p-2 hidden md:block hover:bg-pink-50"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <Image
@@ -58,7 +57,7 @@ export const Side: React.FC = () => {
           </button>
           <button
             onClick={toggleMobileSidebar}
-            className="rounded-full p-2 md:hidden"
+            className="rounded-full p-2 md:hidden hover:bg-pink-50"
             aria-label="Close sidebar"
           >
             <Image
@@ -76,9 +75,9 @@ export const Side: React.FC = () => {
 
         <Link href={"/home"}>
           <div
-            className={`flex pl-4 pt-6 ${
+            className={`flex pl-4 ${
               collapsed ? "md:justify-center md:pl-0" : ""
-            }`}
+            } hover:bg-pink-100 transition-colors duration-200 rounded-l-md`}
           >
             <Image
               alt=""
@@ -99,7 +98,7 @@ export const Side: React.FC = () => {
           <div
             className={`flex pl-4 ${
               collapsed ? "md:justify-center md:pl-0" : ""
-            }`}
+            } hover:bg-pink-100 transition-colors duration-200 rounded-l-md`}
           >
             <Image
               alt=""
@@ -118,7 +117,7 @@ export const Side: React.FC = () => {
         <div
           className={`flex pl-4 ${
             collapsed ? "md:justify-center md:pl-0" : ""
-          }`}
+          } hover:bg-pink-100 transition-colors duration-200 rounded-l-md cursor-pointer`}
         >
           <Image
             alt=""

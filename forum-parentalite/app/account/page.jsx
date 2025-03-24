@@ -90,7 +90,7 @@ export default function Account() {
                   alt="Avatar utilisateur"
                   className="bg-slate-500 rounded-full"
                 />
-                <h1 className="pl-4 md:pl-6 text-xl">{username}</h1>
+                <h1 className="pl-4 md:pl-6 text-xl font-inter">{username}</h1>
               </div>
             </div>
 
@@ -127,7 +127,7 @@ export default function Account() {
                           />
                         </div>
                         <div>
-                          <h3 className="font-semibold">{post.username}</h3>
+                          <h3 className="font-semibold font-inter">{post.username}</h3>
                           {post.createdAt && (
                             <p className="text-xs text-gray-500">
                               {new Date(post.createdAt).toLocaleString()}
@@ -140,7 +140,7 @@ export default function Account() {
                       <hr className="border-t-2 border-red-800 w-4/5 mx-auto" />
 
                       <div className="pt-5 flex flex-row gap-6 justify-around items-center w-full">
-                        <div className="gap-2 flex items-center text-slate-600" onClick={() => sendLike(`${item._id}`)}>
+                        <div className="font-inter gap-2 flex items-center text-slate-600" onClick={() => sendLike(`${item._id}`)}>
                           <Image
                             alt=""
                             width={25}
@@ -150,7 +150,7 @@ export default function Account() {
                           />
                           {post.likes || 0} likes
                         </div>
-                        <div className="gap-2 flex items-center text-slate-600">
+                        <div className="font-inter gap-2 flex items-center text-slate-600">
                           <Image
                             alt=""
                             width={25}

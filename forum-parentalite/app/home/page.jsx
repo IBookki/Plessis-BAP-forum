@@ -90,7 +90,7 @@ export default function Home() {
     }));
   };
 
-  async function sendLike(postId) {
+  async function sendLike(postId) { 
     console.log("like");
     await like(postId);
 
@@ -137,29 +137,8 @@ export default function Home() {
                 <hr className="border-t-2 border-red-800 mb-4" />
                 <div className="flex justify-around">
                   <button
-                    type="button"
-                    className="flex items-center space-x-2"
-                    disabled={pending}
-                  >
-                    <svg
-                      className="w-6 h-6 text-blue-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16m-7 6h7"
-                      ></path>
-                    </svg>
-                    <span>Photo/Vidéo</span>
-                  </button>
-                  <button
                     type="submit"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100 hover:shadow-sm transition-all duration-200"
                     disabled={pending}
                   >
                     <svg
@@ -200,7 +179,7 @@ export default function Home() {
                         />
                       </div>
                       <div>
-                        <h3 className="font-semibold">
+                        <h3 className="font-semibold font-montserrat">
                           {item.username || "Anonymous"}
                         </h3>
                         {item.createdAt && (
@@ -210,13 +189,13 @@ export default function Home() {
                         )}
                       </div>
                     </div>
-                    <p className="p-6 pl-11 text-left">{item.content}</p>
+                    <p className="p-6 pl-11 text-left font-montserrat">{item.content}</p>
                     <hr className="border-t-2 border-red-800 w-4/5 mx-auto" />
 
                     <ul className="pt-5 flex flex-row gap-6 justify-around items-center w-full">
                       <li>
                         <button
-                          className="gap-2 flex items-center text-slate-600"
+                          className="font-inter hover:bg-gray-100 gap-2 flex items-center text-slate-600 rounded-md p-2"
                           onClick={() => sendLike(`${item._id}`)}
                         >
                           <Image
@@ -231,7 +210,7 @@ export default function Home() {
                       </li>
                       <li>
                         <button
-                          className="gap-2 flex items-center text-slate-600"
+                          className="font-inter gap-2 flex items-center text-slate-600 hover:bg-gray-100 p-2"
                           onClick={() => toggleComments(item._id)}
                         >
                           <Image
@@ -248,12 +227,10 @@ export default function Home() {
                       </li>
                     </ul>
 
-                    {/* Comments section */}
                     {showComments[item._id] && (
                       <div className="mt-4 border-t border-gray-200 pt-3">
-                        <h4 className="text-sm font-semibold mb-2">Commentaires</h4>
+                        <h4 className="text-sm font-semibold mb-2 font-inter">Commentaires</h4>
 
-                        {/* Display existing comments */}
                         {item.comments && item.comments.length > 0 ? (
                           <div className="space-y-3 mb-4">
                             {item.comments.map((comment, commentIndex) => (
@@ -291,7 +268,7 @@ export default function Home() {
                             ))}
                           </div>
                         ) : (
-                          <p className="text-sm text-gray-500 ml-6 mb-3">
+                          <p className="font-inter text-sm text-gray-500 ml-6 mb-3">
                             Pas encore de commentaires
                           </p>
                         )}
@@ -311,7 +288,7 @@ export default function Home() {
                           </div>
                           <input
                             type="text"
-                            placeholder="Write a comment..."
+                            placeholder="Ecrire un commentaire"
                             className="flex-grow px-3 py-1 rounded-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-300 text-sm"
                             value={commentContents[item._id] || ""}
                             onChange={(e) =>

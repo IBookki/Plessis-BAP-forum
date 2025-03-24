@@ -78,7 +78,7 @@ export default function Trending() {
                           />
                         </div>
                         <div>
-                          <h3 className="font-semibold">{post.username}</h3>
+                          <h3 className="font-semibold font-inter">{post.username}</h3>
                           {post.createdAt && (
                             <p className="text-xs text-gray-500">
                               {new Date(post.createdAt).toLocaleString()}
@@ -87,12 +87,12 @@ export default function Trending() {
                         </div>
                       </div>
 
-                      <p className="p-6 pl-11 text-left">{post.content}</p>
+                      <p className="p-6 pl-11 text-left font-inter">{post.content}</p>
                       <hr className="border-t-2 border-red-800 w-4/5 mx-auto" />
 
                       <div className="pt-5 flex flex-row gap-6 justify-around items-center w-full">
                         <div
-                          className="gap-2 flex items-center text-slate-600"
+                          className="font-inter gap-2 flex items-center text-slate-600"
                           onClick={() => sendLike(post._id)}
                         >
                           <Image
@@ -120,7 +120,7 @@ export default function Trending() {
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500 w-full max-w-2xl">
+              <p className="font-inter text-center text-gray-500 w-full max-w-2xl">
                 No trending posts found.
               </p>
             )}
