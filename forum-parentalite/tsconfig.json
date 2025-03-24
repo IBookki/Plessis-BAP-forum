@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "app/register/page.jsx",
     "app/page.jsx"
-  ],
+, "app/account/page.jsx"  ],
   "exclude": ["node_modules"]
 }

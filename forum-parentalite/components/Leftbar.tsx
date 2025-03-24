@@ -31,7 +31,6 @@ export const Side: React.FC = () => {
         />
       </button>
 
-      {/* Sidebar */}
       <div
         className={`fixed md:sticky top-0 min-h-screen h-full bg-white overflow-y-auto shadow-md text-left border-r-2 border-pink-800 transition-all duration-300 z-40 
           ${mobileOpen ? "left-0" : "-left-full"} md:left-0
