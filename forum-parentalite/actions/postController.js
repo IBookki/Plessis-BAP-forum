@@ -173,15 +173,12 @@ export const like = async (id) => {
 export const comment = async (prevState, formData) => {
   const errors = {};
   
-  // Get the post ID and comment content from form data
   const postId = formData.get("postId");
   const content = formData.get("content");
 
-  // Get current user
   const currentUser = await getCurrentUser();
   const username = currentUser ? currentUser.username : "Anonymous";
 
-  // Validate the content
   if (typeof content !== "string" || content.trim() === "") {
     return { 
       errors: { content: "Comment cannot be empty" }, 
@@ -198,7 +195,6 @@ export const comment = async (prevState, formData) => {
   try {
     const postsCollection = await getCollection("posts");
     
-    // Update the post with the new comment
     await postsCollection.updateOne(
       { _id: new ObjectId(postId) },
       { $push: { comments: newComment } }
@@ -211,5 +207,33 @@ export const comment = async (prevState, formData) => {
       errors: { general: "Failed to save comment" },
       success: false,
     };
+  }
+};
+
+export const searchPosts = async (keyword) => {
+  if (!keyword || typeof keyword !== 'string' || keyword.trim() === '') {
+    return [];
+  }
+  
+  try {
+    const postsCollection = await getCollection("posts");
+    
+    const searchRegex = new RegExp(keyword.trim(), 'i');
+    
+    const posts = await postsCollection.find({
+      $or: [
+        { content: { $regex: searchRegex } },
+        { username: { $regex: searchRegex } }
+      ]
+    }).toArray();
+    
+    for (const post of posts) {
+      post._id = post._id.toString();
+    }
+    
+    return posts;
+  } catch (error) {
+    console.error("Search error:", error);
+    return [];
   }
 };
