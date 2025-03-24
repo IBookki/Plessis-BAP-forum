@@ -5,73 +5,40 @@ import Leftbar from "@/components/Leftbar";
 import Rightbar from "@/components/Rightbar";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { read, like, create, comment } from "../../actions/postController";
+import { readTrending, like } from "../../actions/postController";
 
-
-export default function Account() {
-  const [username, setUsername] = useState("Loading...");
-  const [userPosts, setUserPosts] = useState([]);
+export default function Trending() {
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   async function sendLike(postId) {
-    console.log("like");
     await like(postId);
-
     const index = posts.findIndex((p) => p._id == postId);
-    console.log(index);
-
     const updatedPost = [...posts];
-
     updatedPost[index].likes = (updatedPost[index].likes || 0) + 1;
     setPosts(updatedPost);
   }
 
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchTrendingPosts() {
       try {
-        console.log("Fetching user data...");
+        const trendingPosts = await readTrending();
 
-        const userResponse = await fetch("/api/user/me");
-        console.log("User API response status:", userResponse.status);
-
-        if (!userResponse.ok) {
-          throw new Error(`Failed to fetch user: ${userResponse.status}`);
-        }
-
-        const userData = await userResponse.json();
-        console.log("User data:", userData);
-
-        if (userData && userData.username) {
-          setUsername(userData.username);
-
-          console.log("Fetching posts...");
-          const allPosts = await read();
-          console.log("All posts:", allPosts);
-
-          if (Array.isArray(allPosts)) {
-            const filteredPosts = allPosts.filter(
-              (post) => post.username === userData.username
-            );
-            console.log("Filtered posts:", filteredPosts);
-            setUserPosts(filteredPosts);
-          } else {
-            console.error("Posts data is not an array:", allPosts);
-            setError("Impossible de récupérer vos publications");
-          }
+        if (Array.isArray(trendingPosts)) {
+          setPosts(trendingPosts);
         } else {
-          console.error("Invalid user data:", userData);
-          setError("Impossible de récupérer vos informations");
+          setError("Failed to fetch trending posts");
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setError(`Erreur: ${error.message}`);
+      } catch (err) {
+        console.error("Error fetching trending posts:", err);
+        setError(`Error: ${err.message}`);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchUserData();
+    fetchTrendingPosts();
   }, []);
 
   return (
@@ -81,22 +48,6 @@ export default function Account() {
         <Leftbar />
         <div className="flex-grow overflow-y-auto">
           <div className="flex flex-col justify-center items-center pt-7 pb-10">
-            <div className="p-4 w-full max-w-2xl bordermb-6">
-              <div className="flex items-center">
-                <Image
-                  src="/vercel.svg"
-                  width={60}
-                  height={60}
-                  alt="Avatar utilisateur"
-                  className="bg-slate-500 rounded-full"
-                />
-                <h1 className="pl-4 md:pl-6 text-xl">{username}</h1>
-              </div>
-            </div>
-
-            <h2 className="text-xl font-bold mb-4 text-center self-center m">
-              Mes posts
-            </h2>
 
             {error && (
               <div className="text-center text-red-500 mb-4 w-full max-w-2xl">
@@ -106,11 +57,11 @@ export default function Account() {
 
             {loading ? (
               <p className="text-center w-full max-w-2xl">
-                Chargement de vos publications...
+                Loading trending posts...
               </p>
-            ) : userPosts.length > 0 ? (
+            ) : posts.length > 0 ? (
               <div className="flex flex-col gap-4 w-full max-w-2xl">
-                {userPosts.map((post, index) => (
+                {posts.map((post, index) => (
                   <div
                     key={index}
                     className="bg-white p-4 rounded-lg shadow-md w-full border border-red-800"
@@ -140,7 +91,10 @@ export default function Account() {
                       <hr className="border-t-2 border-red-800 w-4/5 mx-auto" />
 
                       <div className="pt-5 flex flex-row gap-6 justify-around items-center w-full">
-                        <div className="gap-2 flex items-center text-slate-600" onClick={() => sendLike(`${item._id}`)}>
+                        <div
+                          className="gap-2 flex items-center text-slate-600"
+                          onClick={() => sendLike(post._id)}
+                        >
                           <Image
                             alt=""
                             width={25}
@@ -167,7 +121,7 @@ export default function Account() {
               </div>
             ) : (
               <p className="text-center text-gray-500 w-full max-w-2xl">
-                Vous n'avez pas encore publié de post.
+                No trending posts found.
               </p>
             )}
           </div>

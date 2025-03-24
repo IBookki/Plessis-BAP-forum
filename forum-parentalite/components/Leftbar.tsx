@@ -74,7 +74,6 @@ export const Side: React.FC = () => {
           </button>
         </div>
 
-        {/* Rest of the sidebar content */}
         <Link href={"/home"}>
           <div
             className={`flex pl-4 pt-6 ${
@@ -95,25 +94,27 @@ export const Side: React.FC = () => {
             )}
           </div>
         </Link>
-        <div
-          className={`flex pl-4 ${
-            collapsed ? "md:justify-center md:pl-0" : ""
-          }`}
-        >
-          <Image
-            alt=""
-            width={30}
-            height={30}
-            src="/icons/trending-icons.png"
-            className="object-contain"
-          />
-          {!collapsed && (
-            <div className="text-pink-800 h-[10vh] pl-6 flex items-center font-bold">
-              Populaire
-            </div>
-          )}
-        </div>
 
+        <Link href="/trending">
+          <div
+            className={`flex pl-4 ${
+              collapsed ? "md:justify-center md:pl-0" : ""
+            }`}
+          >
+            <Image
+              alt=""
+              width={30}
+              height={30}
+              src="/icons/trending-icons.png"
+              className="object-contain"
+            />
+            {!collapsed && (
+              <div className="text-pink-800 h-[10vh] pl-6 flex items-center font-bold">
+                Populaire
+              </div>
+            )}
+          </div>
+        </Link>
         <div
           className={`flex pl-4 ${
             collapsed ? "md:justify-center md:pl-0" : ""

@@ -12,9 +12,9 @@ export const Side: React.FC = () => {
           src="/icons/profil-icons.png"
           className="object-contain"
         />
-        <div className="text-lime-600 font-inter h-[10vh] pl-4 flex items-center font-bold">
+        <Link href="/account" className="text-lime-600 font-inter h-[10vh] pl-4 flex items-center font-bold">
           Profil
-        </div>
+        </Link>
       </div>
       <hr className="border-t-2 border-red-800 w-full mx-auto" />
       <div className="flex pl-4">
