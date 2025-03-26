@@ -33,7 +33,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         /></Link>
       </div>
 
-      {/* Formulaire de recherche pour desktop */}
       <form
         onSubmit={handleSearch}
         className="flex-1 max-w-md mx-4 hidden sm:block"
@@ -49,7 +48,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         </div>
       </form>
 
-      {/* Icône de recherche pour mobile */}
       <div className="sm:hidden">
         {showSearchInput ? (
           <form onSubmit={handleSearch} className="flex items-center">
